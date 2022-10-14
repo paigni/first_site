@@ -1,17 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import UserForm
-from .service import regular_streings
+from polls.forms import UserForm
+from polls.services import regular_strings
 
 
 def index(request):
     if request.method == "POST":
         regul = request.POST.get("regul")
         text = request.POST.get("text")
-        if regular_streings(regul, text):
-            return HttpResponse("Совпадения найдены")
-        if not regular_streings(regul,text):
-            return HttpResponse("Регулярное выражение не верно")
+        service_answer = regular_strings(regul, text)
+        return HttpResponse(f"{service_answer}")
     else:
         userform = UserForm()
         return render(request, "index.html", {"form": userform})
